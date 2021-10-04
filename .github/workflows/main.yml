@@ -43,7 +43,7 @@ jobs:
       # Make sure that the build is installable
       - name: Install build
         run: cd dist; pip install *.whl
-      - name: Install build
+      - name: Build Release
         run: python3 -m twine upload -u __token__ -p ${{ secrets.PYPI_TOKEN }} dist/*  
       - name: Release
         uses: softprops/action-gh-release@v1
