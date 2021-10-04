@@ -38,3 +38,24 @@ jobs:
       # Runs a single command using the runners shell
       - name: Build distribution
         run: python3 -m build
+      # Make sure that the build is installable
+      - name: Install build
+        run: cd dist; pip install *.whl
+      
+      - name: pypi-publish
+        # You may pin to the exact commit or the version.
+        # uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+        uses: pypa/gh-action-pypi-publish@v1.4.2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          # PyPI user
+          user: __token__ # optional, default is __token__
+          # Password for your PyPI user or an access token
+          password: ${{secrets.PYPI_TOKEN}}
+          # Show verbose output.
+          verbose: true
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: dist/*
