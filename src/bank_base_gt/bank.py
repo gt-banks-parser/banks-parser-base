@@ -57,6 +57,10 @@ class Bank(BaseBank):
         pass
 
     @abstractmethod
+    def get_account(self, number):
+        pass
+
+    @abstractmethod
     def logout(self):
         pass
 
@@ -95,9 +99,18 @@ class AbstractBankAccount(ABC):
 
 
 class Movement:
-    def __init__(self, account, transaction_id, date, description, ammount):
+    def __init__(
+        self,
+        account,
+        transaction_id,
+        date,
+        description,
+        ammount,
+        alternative_transaction_id=None,
+    ):
         self.account = account
         self.transaction_id = transaction_id
+        self.alternative_transaction_id = alternative_transaction_id
         self.date = date
         self.description = description
         self.ammount = ammount
