@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="bank_base_gt",
-    version="0.2.0",
+    version="0.3.0",
     author="Carlos Simon",
     author_email="dev@csimon.dev",
     description="Bank Parser Base Package for banks in Guatemala",
@@ -22,7 +22,7 @@ setuptools.setup(
         "Intended Audience :: Financial and Insurance Industry",
         "Intended Audience :: Information Technology",
         "Topic :: Office/Business :: Financial",
-        "Topic :: Utilities"
+        "Topic :: Utilities",
     ],
     python_requires=">=3.6",
     install_requires=["requests", "beautifulsoup4", "money", "babel"],
