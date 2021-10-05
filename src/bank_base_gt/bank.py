@@ -119,10 +119,11 @@ class Movement:
         self.is_fund_regulation = ammount == Money(0, currency="GTQ")
 
     def __str__(self):
-        return "{0} - {1} - {2} - {3} - {4}".format(
+        return "{0} - {1} (ID: {5}) - {2} - {3} - {4}".format(
             self.account.account_number,
             self.transaction_id,
             self.date,
             self.description,
             self.ammount,
+            self.alternative_transaction_id,
         )
