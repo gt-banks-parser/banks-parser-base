@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from contextlib import AbstractAsyncContextManager, AbstractContextManager
+import logging
 import requests
 import datetime
 from money import Money
@@ -7,6 +8,7 @@ from money import Money
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36"
 }
+logger = logging.getLogger(__name__)
 
 
 class BaseBank(ABC):
@@ -77,6 +79,7 @@ class Bank(BaseBank):
             merged_headers = dict(list(DEFAULT_HEADERS.items()) + list(headers.items()))
         else:
             merged_headers = DEFAULT_HEADERS
+        logging.debug("Will make request with this headers: {0}".format(merged_headers))
         if data is None:
             result = self._session.get(url, headers=merged_headers)
             result.raise_for_status()
