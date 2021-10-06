@@ -4,6 +4,10 @@ import requests
 import datetime
 from money import Money
 
+DEFAULT_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36"
+}
+
 
 class BaseBank(ABC):
     def __init__(self, login_url, accounts_url, movements_url, logout_url):
@@ -14,6 +18,10 @@ class BaseBank(ABC):
 
 
 class InvalidCredentialsException(Exception):
+    pass
+
+
+class MovementPageNonAvailable(Exception):
     pass
 
 
@@ -65,11 +73,18 @@ class Bank(BaseBank):
         pass
 
     def _fetch(self, url, data=None, headers=None):
-        if data is None:
-            return self._session.get(url).content
+        if headers:
+            merged_headers = dict(list(DEFAULT_HEADERS.items()) + list(headers.items()))
         else:
-            r = self._session.post(url, data=data, headers=headers)
-            return r.text
+            merged_headers = DEFAULT_HEADERS
+        if data is None:
+            result = self._session.get(url, headers=merged_headers)
+            result.raise_for_status()
+            return result.content
+        else:
+            result = self._session.post(url, data=data, headers=merged_headers)
+            result.raise_for_status()
+            return result.text
 
 
 class AbstractBankAccount(ABC):
