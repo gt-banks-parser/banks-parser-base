@@ -1,8 +1,14 @@
 from abc import ABC, abstractmethod
 from contextlib import AbstractAsyncContextManager, AbstractContextManager
+import logging
 import requests
 import datetime
 from money import Money
+
+DEFAULT_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36"
+}
+logger = logging.getLogger(__name__)
 
 
 class BaseBank(ABC):
@@ -14,6 +20,10 @@ class BaseBank(ABC):
 
 
 class InvalidCredentialsException(Exception):
+    pass
+
+
+class MovementPageNonAvailable(Exception):
     pass
 
 
@@ -65,11 +75,19 @@ class Bank(BaseBank):
         pass
 
     def _fetch(self, url, data=None, headers=None):
-        if data is None:
-            return self._session.get(url).content
+        if headers:
+            merged_headers = dict(list(DEFAULT_HEADERS.items()) + list(headers.items()))
         else:
-            r = self._session.post(url, data=data, headers=headers)
-            return r.text
+            merged_headers = DEFAULT_HEADERS
+        logging.debug("Will make request with this headers: {0}".format(merged_headers))
+        if data is None:
+            result = self._session.get(url, headers=merged_headers)
+            result.raise_for_status()
+            return result.content
+        else:
+            result = self._session.post(url, data=data, headers=merged_headers)
+            result.raise_for_status()
+            return result.text
 
 
 class AbstractBankAccount(ABC):
@@ -119,10 +137,11 @@ class Movement:
         self.is_fund_regulation = ammount == Money(0, currency="GTQ")
 
     def __str__(self):
-        return "{0} - {1} - {2} - {3} - {4}".format(
+        return "{0} - {1} (ID: {5}) - {2} - {3} - {4}".format(
             self.account.account_number,
             self.transaction_id,
             self.date,
             self.description,
             self.ammount,
+            self.alternative_transaction_id,
         )
