@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="bank_base_gt",
-    version="0.3.1",
+    version="0.4.0",
     author="Carlos Simon",
     author_email="dev@csimon.dev",
     description="Bank Parser Base Package for banks in Guatemala",

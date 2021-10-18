@@ -27,6 +27,10 @@ class MovementPageNonAvailable(Exception):
     pass
 
 
+class ChangePasswordRequired(Exception):
+    pass
+
+
 class BankLogin(ABC):
     pass
 
