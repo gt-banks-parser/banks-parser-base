@@ -40,12 +40,12 @@ jobs:
       # Runs a single command using the runners shell
       - name: Build distribution
         run: python3 -m build
-      # Run Unit Tests
-      - name: Run Tests
-        run: python -m unittest discover
       # Make sure that the build is installable
       - name: Install build
         run: cd dist; pip install *.whl
+        # Run Unit Tests
+      - name: Run Tests
+        run: python -m unittest discover
       - name: Build Release
         if: startsWith(github.ref, 'refs/tags/')
         run: python3 -m twine upload dist/* -u __token__ -p ${{ secrets.PYPI_TOKEN }}  
