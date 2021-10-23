@@ -1,5 +1,5 @@
 import unittest
-from src.models import BaseBank, Bank, UserPasswordBankLogin
+from bank_base_gt import BaseBank, Bank, UserPasswordBankLogin
 from contextlib import AbstractAsyncContextManager, AbstractContextManager
 
 
@@ -44,12 +44,16 @@ class BankSpy(Bank):
         self.called_login = 0
         self.called_fetch_accounts = 0
         self.called_logout = 0
+        self.called_get_account = 0
 
     def login(self):
         self.called_login += 1
 
     def fetch_accounts(self):
         self.called_fetch_accounts += 1
+
+    def get_account(self, number):
+        self.called_get_account += 1
 
     def logout(self):
         self.called_logout += 1
