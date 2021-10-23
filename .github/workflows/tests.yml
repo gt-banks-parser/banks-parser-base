@@ -32,9 +32,13 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Install dependencies
+     - name: Install dependencies
         run: python3 -m pip install --upgrade pip build twine
-       # Make sure that the build is installable
+
+      # Runs a single command using the runners shell
+      - name: Build distribution
+        run: python3 -m build
+      # Make sure that the build is installable
       - name: Install build
         run: cd dist; pip install *.whl
       # Run Unit Tests
