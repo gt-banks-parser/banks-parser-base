@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.5.0",
     author="Carlos Simon",
     author_email="dev@csimon.dev",
-    description="Bank Parser Base Package for banks in Guatemala",
+    description="Bank Parser Base Package for banks in Guatemala. Provides models and base structure",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/gt-banks-parser/banks-parser-base",
