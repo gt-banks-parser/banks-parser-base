@@ -78,7 +78,7 @@ class Bank(BaseBank):
     def logout(self):
         pass
 
-    def _fetch(self, url, data=None, headers=None):
+    def _fetch(self, url, data=None, headers=None, json=False):
         if headers:
             merged_headers = dict(list(DEFAULT_HEADERS.items()) + list(headers.items()))
         else:
@@ -87,6 +87,8 @@ class Bank(BaseBank):
         if data is None:
             result = self._session.get(url, headers=merged_headers)
             result.raise_for_status()
+            if json:
+                return result.json()
             return result.content
         else:
             result = self._session.post(url, data=data, headers=merged_headers)
