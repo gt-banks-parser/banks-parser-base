@@ -78,20 +78,20 @@ class Bank(BaseBank):
     def logout(self):
         pass
 
-    def _fetch(self, url, data=None, headers=None, json=False):
+    def _fetch(self, url, data=None, headers=None, json=False, proxies=None, auth=None):
         if headers:
             merged_headers = dict(list(DEFAULT_HEADERS.items()) + list(headers.items()))
         else:
             merged_headers = DEFAULT_HEADERS
         logging.debug("Will make request with this headers: {0}".format(merged_headers))
         if data is None:
-            result = self._session.get(url, headers=merged_headers)
+            result = self._session.get(url, headers=merged_headers, auth=auth, timeout=5, proxies=proxies)
             result.raise_for_status()
             if json:
                 return result.json()
             return result.content
         else:
-            result = self._session.post(url, data=data, headers=merged_headers)
+            result = self._session.post(url, data=data, headers=merged_headers, verify=False, auth=auth,  timeout=5, proxies=proxies)
             result.raise_for_status()
             return result.text
 
